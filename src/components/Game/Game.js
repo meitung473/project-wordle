@@ -2,11 +2,13 @@ import React, { useState } from "react";
 
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 import { WORDS } from "../../data";
+import { checkGuess } from "../../game-helpers";
 import { sample } from "../../utils";
 import LostBanner from "../Banner/LostBanner";
 import WonBanner from "../Banner/WonBanner";
-import GuessInput from "../GuessInput";
 import GuessResults from "../GuessResults";
+import InputGroup from "../InputGroup/InputGroup";
+import Keyboard from "../Keyboard/Keyboard";
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -34,10 +36,22 @@ function Game() {
         }
     }
 
+    const validatedGuesses = guesses.map((guess) => checkGuess(guess, answer));
     return (
         <>
-            <GuessResults guesses={guesses} answer={answer} />
-            <GuessInput handleSubmitGuesses={handleSubmitGuesses} />
+            <GuessResults validatedGuesses={validatedGuesses} />
+            <InputGroup
+                handleSubmitGuesses={handleSubmitGuesses}
+                disabled={gameStatus !== "idle"}
+                renderKeyBoard={(handleKeyBoardSync) => (
+                    <Keyboard
+                        validatedGuesses={validatedGuesses}
+                        action={(text) => {
+                            handleKeyBoardSync(text);
+                        }}
+                    />
+                )}
+            />
 
             {gameStatus === "won" && (
                 <WonBanner numOfGuesses={guesses.length} />
