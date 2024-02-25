@@ -11,11 +11,16 @@ import InputGroup from "../InputGroup/InputGroup";
 import Keyboard from "../Keyboard/Keyboard";
 
 // Pick a random word on every pageload.
-const answer = sample(WORDS);
+// const answer = sample(WORDS);
 // To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
+// console.info({ answer });
 
 function Game() {
+    const [answer, setAnswer] = useState(() => {
+        const newAnswer = sample(WORDS);
+        console.info({ answer: newAnswer });
+        return newAnswer;
+    });
     const [guesses, setGuesses] = useState([]);
 
     // idle | won | lost
@@ -37,6 +42,15 @@ function Game() {
     }
 
     const validatedGuesses = guesses.map((guess) => checkGuess(guess, answer));
+
+    function handleReStart() {
+        const newAnswer = sample(WORDS);
+        console.log({ answer: newAnswer });
+        setAnswer(newAnswer);
+        setGameStatus("idle");
+        setGuesses([]);
+    }
+
     return (
         <>
             <GuessResults validatedGuesses={validatedGuesses} />
@@ -54,10 +68,15 @@ function Game() {
             />
 
             {gameStatus === "won" && (
-                <WonBanner numOfGuesses={guesses.length} />
+                <WonBanner
+                    numOfGuesses={guesses.length}
+                    handleReStart={handleReStart}
+                />
             )}
 
-            {gameStatus === "lost" && <LostBanner answer={answer} />}
+            {gameStatus === "lost" && (
+                <LostBanner answer={answer} handleReStart={handleReStart} />
+            )}
         </>
     );
 }

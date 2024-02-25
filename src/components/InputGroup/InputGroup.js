@@ -43,7 +43,6 @@ function InputGroup({ renderKeyBoard, handleSubmitGuesses, disabled }) {
 
                 return;
             case "Backspace":
-                console.log({ backspace: input.slice(0, -1) });
                 setInput((prevInput) => prevInput.slice(0, -1));
                 return;
             default:
@@ -55,7 +54,6 @@ function InputGroup({ renderKeyBoard, handleSubmitGuesses, disabled }) {
                     return nextInput;
                 });
                 const nextInput = (input + letter).toUpperCase();
-                console.log({ nextInput });
                 if (nextInput.length > 5) {
                     inputValidate(nextInput);
                     return;
