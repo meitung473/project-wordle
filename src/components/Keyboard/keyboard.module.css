@@ -1,0 +1,37 @@
+.wrapper {
+    --key-size: 40px;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    column-gap: 4px;
+}
+
+.key {
+    display: grid;
+    place-content: center;
+    width: var(--key-size);
+    height: var(--key-size);
+    background-color: var(--color-gray-900);
+    border-radius: 4px;
+    font-size: 1rem;
+    user-select: none;
+}
+
+.key.correct {
+    background: var(--color-success);
+    color: white;
+}
+.key.incorrect {
+    background: var(--color-gray-300);
+    color: white;
+}
+.key.misplaced {
+    background: var(--color-warning);
+    color: white;
+}
