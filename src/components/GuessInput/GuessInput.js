@@ -4,7 +4,7 @@ import {
     setGuessInputValidity,
 } from "./GuessInput.helpers";
 
-function GuessInput() {
+function GuessInput({ handleSubmitGuesses }) {
     const [guess, setGuess] = useState("");
 
     function handleInput(event) {
@@ -14,12 +14,13 @@ function GuessInput() {
     function handleSubmit(event) {
         event.preventDefault();
         console.log({ guess });
-        let valid = setGuessInputValidity({
+
+        let guessInputValid = setGuessInputValidity({
             status: guessInputValidate(guess),
             inputElement: event.target.querySelector("#guess-input"),
         });
-        if (!valid) return;
-
+        if (!guessInputValid) return;
+        handleSubmitGuesses(guess);
         setGuess("");
     }
 
